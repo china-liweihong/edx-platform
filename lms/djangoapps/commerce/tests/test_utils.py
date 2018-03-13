@@ -29,7 +29,7 @@ def update_commerce_config(enabled=False, checkout_page='/test_basket/'):
     """ Enable / Disable CommerceConfiguration model """
     CommerceConfiguration.objects.create(
         checkout_on_ecommerce_service=enabled,
-        single_course_checkout_page=checkout_page,
+        basket_checkout_page=checkout_page,
     )
 
 
@@ -131,7 +131,7 @@ class EcommerceServiceTests(TestCase):
         url = EcommerceService().get_checkout_page_url(*skus, program_uuid=program_uuid)
         config = CommerceConfiguration.current()
         expected_url = '{root}{basket_url}?{skus}'.format(
-            basket_url=config.MULTIPLE_ITEMS_BASKET_PAGE_URL,
+            basket_url=config.basket_checkout_page,
             root=settings.ECOMMERCE_PUBLIC_URL_ROOT,
             skus=urlencode({'sku': skus}, doseq=True),
         )
